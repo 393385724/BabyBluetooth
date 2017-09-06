@@ -19,7 +19,7 @@
 #pragma mark - 属性
 /*!
  * 扫描参数,centralManager:scanForPeripheralsWithServices:self.scanForPeripheralsWithServices options:self.scanForPeripheralsWithOptions
- * @param An optional dictionary specifying options for the scan.
+ * @note An optional dictionary specifying options for the scan.
  *  @see                centralManager:scanForPeripheralsWithServices
  *  @seealso            CBCentralManagerScanOptionAllowDuplicatesKey :忽略同一个Peripheral端的多个发现事件被聚合成一个发现事件
  *	@seealso			CBCentralManagerScanOptionSolicitedServiceUUIDsKey
@@ -28,8 +28,8 @@
 
 /*!
 *  连接设备的参数
-*  @method connectPeripheral:options:
-*  @param              An optional dictionary specifying connection behavior options.
+*  @link connectPeripheral:options:
+*  @note              An optional dictionary specifying connection behavior options.
 *  @see                centralManager:didConnectPeripheral:
 *  @see                centralManager:didFailToConnectPeripheral:error:
 *  @seealso            CBConnectPeripheralOptionNotifyOnConnectionKey
@@ -42,7 +42,7 @@
 
 /*!
  * 扫描参数,centralManager:scanForPeripheralsWithServices:self.scanForPeripheralsWithServices options:self.scanForPeripheralsWithOptions
- *@param serviceUUIDs A list of <code>CBUUID</code> objects representing the service(s) to scan for.
+ *@note serviceUUIDs A list of <code>CBUUID</code> objects representing the service(s) to scan for.
  *@see                centralManager:scanForPeripheralsWithServices
  */
 @property (nonatomic, copy) NSArray *scanForPeripheralsWithServices;

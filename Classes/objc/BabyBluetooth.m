@@ -566,6 +566,51 @@
     };
 }
 
+- (void)discover:(CBPeripheral *)peripheral service:(NSString *)serviceUUID characteristic:(NSString *)characteristicUUID{
+    if (peripheral.state != CBPeripheralStateConnected) {
+        BabyLog(@"!!!设备当前处于非连接状态");
+        return;
+    }
+    CBService *findService = nil;
+    for (CBService *service in peripheral.services) {
+        if ([service.UUID.UUIDString isEqualToString:serviceUUID]) {
+            findService = service;
+            break;
+        }
+    }
+    __weak __typeof(&*self)weakSelf = self;
+    NSString *channel = [babyCentralManager->pocket valueForKey:@"channel"];
+    [self setBlockOnDiscoverServicesAtChannel:channel block:^(CBPeripheral *peripheral, NSError *error) {
+        __strong __typeof(&*self)stongSelf = weakSelf;
+        for (CBService *service in peripheral.services) {
+            if ([service.UUID.UUIDString isEqualToString:serviceUUID]) {
+                CBCharacteristic *findCharacteristic = nil;
+                for (CBCharacteristic *characteristic in service.characteristics) {
+                    if ([characteristic.UUID.UUIDString isEqualToString:characteristicUUID]) {
+                        findCharacteristic = characteristic;
+                        break;
+                    }
+                }
+                if (findCharacteristic) {
+                    if ([stongSelf.babySpeaker callbackOnCurrChannel].blockOnDiscoverCharacteristics) {
+                        [stongSelf.babySpeaker callbackOnCurrChannel].blockOnDiscoverCharacteristics(peripheral, service, nil);
+                    }
+                } else {
+                    [peripheral discoverCharacteristics:@[[CBUUID UUIDWithString:characteristicUUID]] forService:service];
+                }
+                break;
+            }
+        }
+    }];
+    if (findService) {
+        if ([self.babySpeaker callbackOnCurrChannel].blockOnDiscoverServices) {
+            [self.babySpeaker callbackOnCurrChannel].blockOnDiscoverServices(peripheral, nil) ;
+        }
+    } else {
+        [peripheral discoverServices:@[[CBUUID UUIDWithString:serviceUUID]]];
+    }
+}
+
 - (void)notify:(CBPeripheral *)peripheral
 characteristic:(CBCharacteristic *)characteristic
         block:(void(^)(CBPeripheral *peripheral, CBCharacteristic *characteristics, NSError *error))block {
@@ -593,6 +638,11 @@ characteristic:(CBCharacteristic *)characteristic
 //获取当前corebluetooth的centralManager对象
 - (CBCentralManager *)centralManager {
     return babyCentralManager->centralManager;
+}
+
+//回调
+- (BabySpeaker *)babySpeaker {
+    return babyCentralManager->babySpeaker;
 }
 
 /**

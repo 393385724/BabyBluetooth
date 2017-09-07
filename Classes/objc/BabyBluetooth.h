@@ -462,6 +462,11 @@ sec秒后停止
 - (BabyBluetooth *(^)(CBPeripheral *peripheral,CBCharacteristic *characteristic)) characteristicDetails;
 
 /**
+ 查找指定service的characteristic,确保已经连接设备
+ */
+- (void)discover:(CBPeripheral *)peripheral service:(NSString *)serviceUUID characteristic:(NSString *)characteristicUUID;
+
+/**
 设置characteristic的notify
  */
 - (void)notify:(CBPeripheral *)peripheral

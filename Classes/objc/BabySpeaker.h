@@ -23,6 +23,9 @@
 - (BabyCallback *)callbackOnChnnel:(NSString *)channel
                createWhenNotExist:(BOOL)createWhenNotExist;
 
+//当前的频道
+- (NSString *)currentChannel;
+
 //切换频道
 - (void)switchChannel:(NSString *)channel;
 

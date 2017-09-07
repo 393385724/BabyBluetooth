@@ -579,8 +579,7 @@
         }
     }
     __weak __typeof(&*self)weakSelf = self;
-    NSString *channel = [babyCentralManager->pocket valueForKey:@"channel"];
-    [self setBlockOnDiscoverServicesAtChannel:channel block:^(CBPeripheral *peripheral, NSError *error) {
+    [self setBlockOnDiscoverServicesAtChannel:[babySpeaker currentChannel] block:^(CBPeripheral *peripheral, NSError *error) {
         __strong __typeof(&*self)stongSelf = weakSelf;
         for (CBService *service in peripheral.services) {
             if ([service.UUID.UUIDString isEqualToString:serviceUUID]) {

@@ -46,6 +46,10 @@ typedef NS_ENUM(NSUInteger, BabySpeakerType) {
     return self;
 }
 
+- (NSString *)currentChannel {
+    return currChannel;
+}
+
 - (BabyCallback *)callback {
     return [channels objectForKey:KBABY_DETAULT_CHANNEL];
 }
